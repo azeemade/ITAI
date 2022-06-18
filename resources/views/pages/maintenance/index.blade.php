@@ -26,7 +26,7 @@
                 </form>
             </div>
             <div>
-                <label for="exampleFormControlInput1" class="form-label font-medium inline-block font-medium mb-2 text-dark text-sm">
+                <label for="exampleFormControlInput1" class="form-label inline-block font-medium mb-2 text-dark text-sm">
                     Category
                 </label>
                 <select class="form-select appearance-none
@@ -50,7 +50,7 @@
                 </select>
             </div>
             <div>
-                <label for="exampleFormControlInput1" class="form-label font-medium font-medium inline-block mb-2 text-dark text-sm">
+                <label for="exampleFormControlInput1" class="form-label font-medium inline-block mb-2 text-dark text-sm">
                     Department
                 </label>
                 <select class="form-select appearance-none
