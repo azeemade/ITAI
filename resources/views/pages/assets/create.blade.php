@@ -338,7 +338,7 @@
                 </div>
             </div>
             <div class="col-end-4 col-span-1 flex justify-end">
-                <x-button type="submit">
+                <x-button type="submit" class="!bg-primary-50 text-white hover:!bg-primary">
                     <span id="title">Add asset</span>
                     <x-slot:spinner>
                         <div class="hidden justify-center items-center" id="spinner">

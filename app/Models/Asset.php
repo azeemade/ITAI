@@ -55,6 +55,6 @@ class Asset extends Model
 
     public function staffs()
     {
-        return $this->belongsToMany(Staff::class);
+        return $this->belongsToMany(Staff::class, 'assets_staffs', 'asset_id', 'staff_id');
     }
 }

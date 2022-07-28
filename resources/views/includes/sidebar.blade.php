@@ -1,6 +1,7 @@
 <div class="px-7 pt-8 flex flex-col items-center">
     <p class="mb-16 text-2xl">
-        <strong class="text-primary">MEDIA </strong> <strong class="text-secondary">TRUST</strong></p>
+        {{-- <strong class="text-primary">MEDIA </strong> <strong class="text-secondary">TRUST</strong></p> --}}
+        <img src="{{ asset('image/logo2.png')}}" class="">
     <div>
         <ul class="flex-col flex space-y-10 h-full">
             <li class="">

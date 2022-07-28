@@ -76,7 +76,7 @@
                 </select>
             </div>
             <div>
-                <x-button type="button" class="!bg-secondary-50 hover:!bg-secondary">
+                <x-button type="button" class="!bg-secondary-50 hover:!bg-secondary !text-white">
                     <span id="filter">Filter</span>
                     <x-slot:spinner></x-slot>
                 </x-button>
@@ -85,6 +85,9 @@
 
         <div class="bg-white my-5 rounded-lg shadow-md">
             <table class="table-auto w-full">
+                <caption class="text-xl font-medium text-left py-4 pl-3">
+                    All Assets (<strong>{{ $assets->count() }}</strong>)
+                </caption>
                 <thead>
                     <tr class="bg-secondary-50/50 border-b border-secondary">
                         <th class="pl-3">ID</th>
@@ -97,6 +100,7 @@
                         <th>Category</th>
                         <th>Registered by</th>
                         <th>Registered on</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,6 +116,34 @@
                             <td>{{ $asset->category->name }}</td>
                             <td>{{ $asset->user_id }}</td>
                             <td>{{ \Carbon\Carbon::parse($asset->created_at)->format('j F Y') }}</td>
+                            <td>
+                                <x-dropdown>
+                                    <li>
+                                        <a class="dropdown-item text-sm py-2 px-4 font-normal 
+                                                    block w-full whitespace-nowrap text-gray-700 
+                                                    hover:bg-gray-100"
+                                            {{-- href="{{ route('show asset', [$asset->id]) }}"> --}}
+                                            View
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-sm py-2 px-4 font-normal 
+                                                    block w-full whitespace-nowrap text-gray-700 
+                                                    hover:bg-gray-100"
+                                            {{-- href="{{ route('edit asset', [$asset->id]) }}"> --}}
+                                            Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-sm py-2 px-4 font-normal 
+                                                block w-full whitespace-nowrap text-gray-700
+                                                hover:bg-gray-100"
+                                        href="{{ url("/assets/{$asset->id}#maintenanceLog") }}">
+                                        Maintenance Log
+                                        </a>
+                                    </li>
+                                </x-dropdown>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -123,7 +155,6 @@
     <script>
         $(
             function() {
-                // var filterData = function() {
                 $('#filter').on('click', function(){
                     $('#assetOverlay').removeClass('hidden').addClass('flex')
                     $.ajaxSetup({
@@ -146,7 +177,20 @@
                                 $('tbody').html(res.data);
                             }
                             else {
-                                $('tbody').html(` <x-error.assets /> `)
+                                $('tbody').html(` 
+                                                    <x-error.table>
+                                                        <x-slot:image>
+                                                            <img src="{{ asset('image/23.png')}}" alt="error image" class="w-96">
+                                                        </x-slot>
+                                                        <span>
+                                                            <a href="{{ route('new asset') }}" class="mb-3 inline-block px-6 py-2.5 bg-primary-50 text-white font-medium 
+                                                                                    text-sm leading-tight rounded shadow-md 
+                                                                                    hover:bg-primary hover:shadow-lg transition duration-150 ease-in-out">
+                                                                <i class="bi bi-plus mr-2"></i>
+                                                                New asset
+                                                            </a>
+                                                        </span>
+                                                </x-error.table> `)
                             }
                         }
                     })

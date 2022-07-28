@@ -112,7 +112,7 @@
                 data-bs-dismiss="modal">
                 Close
             </button>
-            <x-button id="addStaffBtn" type="button">
+            <x-button id="addStaffBtn" type="button" class="!bg-primary-50 text-white hover:!bg-primary">
                 <span id="title" class="inline-block">Add staff</span>
                 <x-slot:spinner>
                     <div class="hidden justify-center items-center" id="spinner">

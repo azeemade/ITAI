@@ -10,6 +10,6 @@ td {
     @apply text-dark;
 }
 
-th{
+th {
     @apply font-medium text-secondary;
 }

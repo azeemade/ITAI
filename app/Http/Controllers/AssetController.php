@@ -153,7 +153,7 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        //
+        return view("pages.assets.view", compact('asset'));
     }
 
     /**
@@ -164,7 +164,7 @@ class AssetController extends Controller
      */
     public function edit(Asset $asset)
     {
-        //
+        return view("pages.assets.edit", compact('asset'));
     }
 
     /**
