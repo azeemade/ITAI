@@ -102,10 +102,10 @@ class AssetResource extends Resource
             ]);
     }
 
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
+    // protected function getRedirectUrl(): string
+    // {
+    //     return $this->getResource()::getUrl('index');
+    // }
 
     public static function table(Table $table): Table
     {
@@ -117,6 +117,10 @@ class AssetResource extends Resource
                     ->label('Brand'),
                 Tables\Columns\TextColumn::make('serial_number')
                     ->label('Serial number'),
+
+                Tables\Columns\TextColumn::make('category_id')
+                    ->label('Category')
+                    ->enum(Category::all()->pluck('name', 'id')),
 
                 Tables\Columns\TextColumn::make('department_id')
                     ->label('Department')
@@ -130,10 +134,6 @@ class AssetResource extends Resource
                         'warning' => 'With_repairs',
                         'success' => 'Issued',
                     ]),
-
-                Tables\Columns\TextColumn::make('category_id')
-                    ->label('Category')
-                    ->enum(Category::all()->pluck('name', 'id')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Registered on')
                     ->date(),
@@ -146,8 +146,7 @@ class AssetResource extends Resource
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),filament-patch
-                Vie
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
