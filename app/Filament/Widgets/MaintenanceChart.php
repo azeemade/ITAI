@@ -6,6 +6,7 @@ use App\Enums\MaintenanceStatus;
 use Filament\Widgets\DoughnutChartWidget;
 use App\Models\Asset;
 use App\Models\Category;
+use App\Models\Maintenance;
 use Illuminate\Support\Facades\DB;
 
 class MaintenanceChart extends DoughnutChartWidget
@@ -15,8 +16,8 @@ class MaintenanceChart extends DoughnutChartWidget
 
     public function getChartData()
     {
-        $count = Asset::groupBy('category_id')
-            ->orderBy('category_id', 'DESC')
+        $count = Maintenance::groupBy('status')
+            ->orderBy('status', 'DESC')
             ->get(array(
                 DB::raw('COUNT(*) as "count"')
             ));

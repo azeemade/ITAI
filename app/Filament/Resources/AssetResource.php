@@ -24,12 +24,15 @@ use App\Models\Department;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+
 
 class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
+    public ?Model $record = null;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
     public static function form(Form $form): Form
     {
@@ -102,11 +105,6 @@ class AssetResource extends Resource
             ]);
     }
 
-    // protected function getRedirectUrl(): string
-    // {
-    //     return $this->getResource()::getUrl('index');
-    // }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -157,12 +155,20 @@ class AssetResource extends Resource
         ];
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            Widgets\AssetMaintenance::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListAssets::route('/'),
             'create' => Pages\CreateAsset::route('/create'),
             'edit' => Pages\EditAsset::route('/{record}/edit'),
+            'view' => Pages\ViewAssets::route('/{record}'),
         ];
     }
 }
