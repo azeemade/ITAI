@@ -34,12 +34,12 @@ class AssetSeeder extends Seeder
                 'serial_number' => $faker->randomNumber(9, true),
                 'disposition' => $faker->randomElement($array = Disposition::getKeys()),
                 'status' => $faker->randomElement($array = Status::getKeys()),
-                'user_id' => 'admin',
+                'user_id' => '1',
                 'department_id' => $this->getDepartment(),
                 'location_id' => $this->getLocation(),
                 'category_id' => $this->getCategory(),
                 'functionality' => $faker->randomElement($array = Functionality::getKeys()),
-                'note'   => $faker->paragraph(3)
+                'note'   => $faker->paragraph(2)
             ]);
         }
     }

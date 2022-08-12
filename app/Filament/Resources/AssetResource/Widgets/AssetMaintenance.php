@@ -12,6 +12,9 @@ use Filament\Tables\Columns\BadgeColumn;
 use App\Enums\MaintenanceStatus;
 use App\Enums\Priority;
 use App\Enums\ServiceType;
+use App\Models\Asset;
+use Filament\Tables\Actions\Action;
+use Illuminate\Database\Eloquent\Collection;
 
 class AssetMaintenance extends BaseWidget
 {
@@ -32,7 +35,8 @@ class AssetMaintenance extends BaseWidget
             Tables\Columns\TextColumn::make('subject')
                 ->label('Subject'),
             Tables\Columns\TextColumn::make('description')
-                ->label('Description'),
+                ->label('Description')
+                ->extraAttributes(['class' => 'whitespace-normal']),
             BadgeColumn::make('status')
                 ->label('Status')
                 ->enum(MaintenanceStatus::getKeys())
@@ -66,6 +70,24 @@ class AssetMaintenance extends BaseWidget
             Tables\Columns\TextColumn::make('repaired_on')
                 ->label('Repaired On')
                 ->date(),
+        ];
+        // ->actions([
+        //     Action::make('create')
+        //         ->label('Create Issue')
+        //         ->url(fn (Asset $record): string => route('filament.resources.maintenances.create', ['record' => $record]))
+        //         ->color('primary')
+        //         ->icon('heroicon-o-plus')
+        // ])
+    }
+
+    protected function getTableAction(): array
+    {
+        return [
+            Action::make('create')
+                ->label('Create Issue')
+                ->url(fn (Asset $record): string => route('maintenance.create', $record))
+                ->color('primary')
+                ->icon('heroicon-o-plus')
         ];
     }
 

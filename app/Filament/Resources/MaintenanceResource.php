@@ -19,9 +19,11 @@ use App\Enums\MaintenanceStatus;
 use App\Enums\Priority;
 use App\Enums\ServiceType;
 use App\Models\Asset;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\Grid;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Http\Request;
 
 class MaintenanceResource extends Resource
 {
@@ -29,7 +31,8 @@ class MaintenanceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-support';
 
-    public static function form(Form $form): Form
+    public ?Model $record = null;
+    public static function form(Form $form, ?Model $record = null): Form
     {
         return $form
             ->schema([
@@ -38,11 +41,10 @@ class MaintenanceResource extends Resource
                     ->required()
                     ->maxLength(255),
 
-                Select::make('asset_id')
+                Forms\Components\TextInput::make('asset.id')
                     ->label('Asset ID')
-                    ->required()
-                    ->options(Asset::all()->pluck('name', 'id'))
-                    ->searchable(),
+                    ->default($record)
+                    ->disabled(),
 
                 Textarea::make('description')
                     ->label('Description')
@@ -155,7 +157,7 @@ class MaintenanceResource extends Resource
     {
         return [
             'index' => Pages\ListMaintenances::route('/'),
-            'create' => Pages\CreateMaintenance::route('/create'),
+            'create' => Pages\CreateMaintenance::route('/{record}/create'),
             'view' => Pages\ViewMaintenance::route('/{record}'),
             'edit' => Pages\EditMaintenance::route('/{record}/edit'),
         ];

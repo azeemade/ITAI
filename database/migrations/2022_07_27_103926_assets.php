@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('brand');
             $table->string('model')->nullable();
             $table->string('serial_number')->nullable();
-            $table->string('tag')->nullable();
+            $table->json('tags')->nullable();
             $table->string('disposition')->default(Disposition::getKey(Disposition::Issued));
             $table->string('status')->default(Status::getKey(Status::Store));
             $table->string('user_id');
@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('functionality')->default(Functionality::getKey(Functionality::Operational));
             $table->string('note')->nullable();
             $table->json('others')->nullable();
+            $table->json('staff')->nullable();
             $table->string('image')->nullable();
             $table->SoftDeletes();
             $table->timestamps();

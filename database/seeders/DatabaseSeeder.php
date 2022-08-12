@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // AssetSeeder::class,
-            MaintenanceSeeder::class,
+            AssetSeeder::class,
+            // MaintenanceSeeder::class,
         ]);
 
         // $file = Storage::disk('public')->get("seed/db.json");

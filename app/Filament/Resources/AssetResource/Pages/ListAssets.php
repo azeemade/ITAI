@@ -3,17 +3,20 @@
 namespace App\Filament\Resources\AssetResource\Pages;
 
 use App\Filament\Resources\AssetResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+
+use App\Filament\Resources\AssetResource\Widgets\DepartmentAssetsChart;
+use App\Filament\Resources\AssetResource\Widgets\AssetsDateChart;
 
 class ListAssets extends ListRecords
 {
     protected static string $resource = AssetResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderWidgets(): array
     {
         return [
-            Actions\CreateAction::make(),
+            DepartmentAssetsChart::class,
+            AssetsDateChart::class
         ];
     }
 }

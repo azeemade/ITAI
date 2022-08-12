@@ -11,27 +11,16 @@ class Asset extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'brand', 'model', 'serial_number', 'tag',
+        'name', 'brand', 'model', 'serial_number', 'tags',
         'disposition', 'status', 'user_id', 'department_id', 'location_id',
-        'category_id', 'functionality', 'note', 'others', 'image'
+        'category_id', 'functionality', 'note', 'others', 'image', 'staff'
     ];
 
     protected $casts = [
-        'others' => 'array'
+        'others' => 'array',
+        'staff' => 'array',
+        'tags' => 'array'
     ];
-
-    public function setOthersAttribute($value)
-    {
-        $others = [];
-
-        foreach ($value as $val) {
-            if (!is_null($val['key'])) {
-                $others[] = $val;
-            }
-        }
-
-        $this->attributes['others'] = json_encode($others);
-    }
 
     public function maintenance()
     {
@@ -53,7 +42,7 @@ class Asset extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function staffs()
+    public function staff()
     {
         return $this->belongsToMany(Staff::class, 'assets_staffs', 'asset_id', 'staff_id');
     }

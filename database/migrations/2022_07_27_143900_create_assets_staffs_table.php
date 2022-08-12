@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('assets_staffs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('staff_id');
-            $table->foreign('staff_id')
-                ->references('staff_id')->on('staff');
-            $table->foreignId('asset_id')->constrained('assets');
-            $table->timestamps();
-        });
+        // Schema::create('assets_staffs', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('staff_id');
+        //     $table->foreign('staff_id')
+        //         ->references('staff_id')->on('staff');
+        //     $table->foreignId('asset_id')->constrained('assets');
+        //     $table->timestamps();
+        // });
     }
 
     /**

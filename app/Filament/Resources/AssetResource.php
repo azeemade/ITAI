@@ -16,21 +16,27 @@ use Filament\Tables;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use App\Enums\Disposition;
+use Filament\Forms\Components\Fieldset;
 use App\Enums\Functionality;
 use App\Enums\Status;
+use App\Models\Assets_staff;
+use Filament\Forms\Components\Hidden;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Department;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Model;
-
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\SelectFilter;
 
 class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
     public ?Model $record = null;
+    protected static ?string $heading = 'All assets';
 
     protected static ?string $navigationIcon = 'heroicon-o-desktop-computer';
 
@@ -38,57 +44,62 @@ class AssetResource extends Resource
     {
         return $form
             ->schema([
+                // Forms\Components\TextInput::make('id')
+                //     ->label('ID')
+                //     ->disabled()
+                //     ->default(Uuid::uuid4()->toString()),
+
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
                     ->required()
                     ->maxLength(255),
-
-                FileUpload::make('image')
-                    ->label('Image'),
 
                 Forms\Components\TextInput::make('brand')
                     ->label('Brand')
                     ->required()
                     ->maxLength(255),
 
+                Forms\Components\TextInput::make('model')
+                    ->label('Model')
+                    ->maxLength(255),
+
+                Forms\Components\TextInput::make('serial_number')
+                    ->maxLength(255),
+
+                // Forms\Components\TextInput::make('tag')
+                //     ->label('Tag')
+                //     ->maxLength(255),
+
+                TagsInput::make('tags')->label('Tags'),
+
+                Select::make('user_id')
+                    ->required()
+                    ->label('User')
+                    ->options(User::all()->pluck('name', 'name')),
+
+                Textarea::make('note')
+                    ->label('Note')
+                    ->columnSpan('full'),
+
                 Select::make('location_id')
                     ->required()
                     ->label('Location')
                     ->relationship('location', 'name'),
-
-                Forms\Components\TextInput::make('model')
-                    ->label('Model')
-                    ->maxLength(255),
 
                 Select::make('department_id')
                     ->required()
                     ->label('Department')
                     ->relationship('department', 'name'),
 
-                Forms\Components\TextInput::make('serial_number')
-                    ->maxLength(255),
-
                 Select::make('category_id')
                     ->required()
                     ->label('Category')
                     ->relationship('category', 'name'),
 
-                Forms\Components\TextInput::make('tag')
-                    ->label('Tag')
-                    ->maxLength(255),
-
-                Textarea::make('note')
-                    ->label('Note'),
-
                 Select::make('disposition')
                     ->required()
                     ->label('Dispositon')
                     ->options(Disposition::getKeys()),
-
-                Select::make('user_id')
-                    ->required()
-                    ->label('User')
-                    ->options(User::all()->pluck('name', 'id')),
 
                 Select::make('status')
                     ->required()
@@ -101,7 +112,16 @@ class AssetResource extends Resource
                     ->options(Functionality::getKeys()),
 
                 KeyValue::make('others')
-                    ->label('Others')
+                    ->label('Others'),
+
+                KeyValue::make('staff')
+                    ->label('Assign to staff')
+                    ->keyLabel('Staff ID')
+                    ->valueLabel('Staff Name'),
+
+                FileUpload::make('image')
+                    ->label('Image'),
+
             ]);
     }
 
@@ -109,6 +129,8 @@ class AssetResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name'),
                 Tables\Columns\TextColumn::make('brand')
@@ -137,30 +159,51 @@ class AssetResource extends Resource
                     ->date(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name', 'id')),
+                SelectFilter::make('department')
+                    ->label('Department')
+                    ->options(Department::all()->pluck('name', 'id'))
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Action::make('create')
+                    ->label('Create Issue')
+                    ->url(fn (Asset $record): string => route('filament.resources.maintenances.create', ['record' => $record->id]))
+                    // ->url(fn (Asset $record) => MaintenanceResource::getUrl('create', ['record' => $record->maintenance]))
+                    ->color('primary')
+                    ->icon('heroicon-o-plus')
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getWidgets(): array
     {
         return [
             Widgets\AssetMaintenance::class,
+            Widgets\DepartmentAssetsChart::class,
+            Widgets\AssetsDateChart::class,
         ];
     }
+
+    // public function isTableSearchable(): bool
+    // {
+    //     return true;
+    // }
+
+    // protected function applySearchToTableQuery(Builder $query): Builder
+    // {
+    //     if (filled($searchQuery = $this->getTableSearchQuery())) {
+    //         $query->where('name', Asset::search($searchQuery)->keys())
+    //             ->orWhere('serial_number', Asset::search($searchQuery)->keys());
+    //     }
+
+    //     return $query;
+    // }
 
     public static function getPages(): array
     {
